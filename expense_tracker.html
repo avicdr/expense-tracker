@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Expense Tracker</title>
+  <!-- Chart.js CDN for bonus pie chart -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div>
+        <h1>Expense Tracker</h1>
+        <p>Track income & expenses — persists in localStorage</p>
+      </div>
+      <div style="text-align:right;color:var(--muted)">v1.0 • Offline</div>
+    </header>
+
+    <div class="layout">
+      <div class="card">
+        <form id="txnForm">
+          <div class="row" style="align-items:center">
+            <div class="type-btns">
+              <label><input type="radio" name="type" value="expense" checked> Expense</label>
+              <label style="margin-left:8px"><input type="radio" name="type" value="income"> Income</label>
+            </div>
+            <input type="date" id="date" />
+          </div>
+
+          <div class="row">
+            <input id="desc" placeholder="Description (e.g., Grocery)" />
+            <select id="category">
+              <option value="Food">Food</option>
+              <option value="Transport">Transport</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Bills">Bills</option>
+              <option value="Salary">Salary</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <input id="amount" type="number" step="0.01" placeholder="Amount" />
+            <button type="submit" class="btn primary">Add Transaction</button>
+          </div>
+
+          <div id="error" class="error" style="display:none"></div>
+        </form>
+
+        <div class="summary">
+          <div class="tile">
+            <h3>Total Income</h3>
+            <p id="totalIncome">₹0.00</p>
+          </div>
+          <div class="tile">
+            <h3>Total Expenses</h3>
+            <p id="totalExpense">₹0.00</p>
+          </div>
+          <div class="tile">
+            <h3>Net</h3>
+            <p id="net">₹0.00</p>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+          <h3 style="margin:0">Transactions</h3>
+          <div class="controls">
+            <select id="filterCat" class="small">
+              <option value="all">All categories</option>
+            </select>
+            <button id="clearAll" class="small">Clear All</button>
+            <button id="exportBtn" class="small">Export JSON</button>
+            <label class="small" style="display:inline-block;cursor:pointer">
+              Import<input type="file" id="importFile" accept="application/json" style="display:none"/>
+            </label>
+          </div>
+        </div>
+
+        <div class="transactions" id="txnList"></div>
+      </div>
+
+      <div class="right-grid">
+        <div class="card chart-wrap" style="position: relative;">
+          <h5 style="margin:3px 0; position: absolute; top: 0; left: 0; padding: .5rem;">Expenses by Category</h5>
+          <canvas id="pieChart"></canvas>
+        </div>
+
+        <div class="card">
+          <h3 style="margin:6px 0">Quick Actions</h3>
+          <p style="color:var(--muted);font-size:14px">Add, edit, filter, export/import JSON. Use the list to delete or edit items.</p>
+          <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+            <button id="addSample" class="btn">Add Sample Data</button>
+            <button id="toggleChart" class="btn">Toggle Chart</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="./index.js"></script>
+
+  <!-- README (quick) -->
+  <!--
+    Expense Tracker - single file
+
+    Usage:
+    - Open this HTML file in any modern browser.
+    - Add transactions using the form. Select Expense or Income, pick date and category.
+    - Edit: click Edit on a transaction to load it into the form (it removes the original so Save will re-add).
+    - Delete: click Delete.
+    - Filter by category using the dropdown.
+    - Export JSON / Import JSON for backup and restore.
+    - Data persists to localStorage as key: expense-tracker:txns:v1
+    - Bonus: Pie chart shows expenses by category (requires Chart.js CDN included).
+
+    Code structure:
+    - HTML: layout and form
+    - CSS: simple responsive styles in head
+    - JS: all logic at bottom: load/save, render, chart, import/export, validation
+
+    Feel free to ask for additional features: multi-currency, recurring transactions, CSV export, or server sync.
+  -->
+</body>
+</html>
